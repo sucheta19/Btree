@@ -1,9 +1,15 @@
 /*
-LECTURE : 12
+LECTURE : 12 & 13
 DATE    : 01/02/2020
 TOPIC   : 1. BST CREATE FROM INORDER
-2. BST ADD NODE
-3. BST DELETE NODE
+          2. BST ADD NODE
+          3. BST DELETE NODE
+
+DATE    : 02/02/2020
+TOPIC   : 1. BST LCA
+          2.
+          3.
+
 */
 
 #include<bits/stdc++.h>
@@ -135,7 +141,41 @@ void printBT(const Node* node)
 {
     printBT("", node, false);
 }
+/*-----------------------------------------------------------------LECTURE - 12-----------------------------------------------------------------*/
+Node* find(Node* root, int a){
+  if(root == NULL)
+  return NULL;
 
+  if(a < root->data)
+  return find(root->left, a);
+
+  if(a > root->data)
+  return find(root->right, a);
+
+  return root;
+}
+
+Node* LCA_BST(Node* node, int a, int b){
+  if(node == NULL) // Required Only when root NULL
+  return NULL;
+
+  if(a==b)
+  return find(node, a);
+
+  if((a <= node->data && b >= node->data) || (a >= node->data && b <= node->data)){
+
+  if(!find(node, a) || !find(node, b) )
+  return NULL;
+
+  else
+  return node;
+  }
+
+  if(a<node->data)
+  return LCA_BST(node->left, a, b);
+
+  return LCA_BST(node->right, a, b);
+}
 
 int main(){
   vector<int> v;
@@ -144,8 +184,11 @@ int main(){
   Node* root = create_in(v, 0, v.size()-1);
   //root = add_node_BST(root, 0);
 
-  root = del_node_BST(root, 7);
+  //root = del_node_BST(root, 7);
   display(root);
+
+   Node* ans = LCA_BST(root, 0, 8);  //find(root, 4);
+   cout<<(ans==NULL?-1:ans->data)<<"\n";
   //printBT(root);
   delete root;
   return 0;
