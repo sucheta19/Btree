@@ -6,10 +6,10 @@ TOPIC   : 1. BST CREATE FROM INORDER
           3. BST DELETE NODE
 
 DATE    : 02/02/2020
-TOPIC   : 1. BST LCA
-          2.
-          3.
-
+TOPIC   : 1. LCA IN BST
+          2. PRINT ALL NODES BTW GIVEN L AND R
+          3. LEFT WIDTH OR RIGHT WIDTH OF A TREE GENERIC FN
+          4. DIAGONAL SUM AND VERTICAL SUM
 */
 
 #include<bits/stdc++.h>
@@ -177,6 +177,33 @@ Node* LCA_BST(Node* node, int a, int b){
   return LCA_BST(node->right, a, b);
 }
 
+void Print_btw_ranges(Node* root, int l, int r){
+  if(root == NULL )
+  return;
+
+  if(root->data < l)
+  Print_btw_ranges(root->right, l, r);
+
+  else if(root->data > r)
+  Print_btw_ranges(root->left, l, r);
+
+  else{
+    cout<<root->data<<" ";
+    Print_btw_ranges(root->left, l, r);
+    Print_btw_ranges(root->right, l, r);
+}
+}
+
+int width(Node* node, bool isLeft){
+  if(node == NULL)
+   return -1;
+
+  int left = width(node->left, true) + (isLeft ? 1 : -1);
+  int right = width(node->right, false) + (isLeft ? 1 : -1);
+
+  return max(left, right);
+}
+
 int main(){
   vector<int> v;
   v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -187,9 +214,14 @@ int main(){
   //root = del_node_BST(root, 7);
   display(root);
 
-   Node* ans = LCA_BST(root, 0, 8);  //find(root, 4);
-   cout<<(ans==NULL?-1:ans->data)<<"\n";
+   //Node* ans = LCA_BST(root, 0, 8);  //find(root, 4);
+  // cout<<(ans==NULL?-1:ans->data)<<"\n";
   //printBT(root);
+
+  Print_btw_ranges(root, 2, 7);
+
   delete root;
+
+
   return 0;
 }
